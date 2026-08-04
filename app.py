@@ -14,7 +14,7 @@ from langserve import add_routes
 # ==========================================
 # 1. LLM INITIALIZATION
 # ==========================================
-# Pull key from environment variables (configured later in Render dashboard)
+# Pull key from environment variables (configured in Render dashboard)
 api_key = os.getenv("GOOGLE_API_KEY")
 
 llm_flash = ChatGoogleGenerativeAI(
@@ -112,6 +112,15 @@ app = FastAPI(
     version="1.0",
     description="API interface for automated Python development and testing graph."
 )
+
+# Root endpoint welcome message
+@app.get("/")
+def read_root():
+    return {
+        "message": "LangGraph Agent API is live!",
+        "playground_url": "/agent/playground/",
+        "docs_url": "/docs"
+    }
 
 # Serve the executable agent graph under /agent path
 add_routes(app, rt_app, path="/agent")
